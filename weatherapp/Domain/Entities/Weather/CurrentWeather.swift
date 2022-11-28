@@ -1,5 +1,5 @@
 //
-//  CurrentWeatherResponse.swift
+//  CurrentWeather.swift
 //  weatherapp
 //
 //  Created by Kasidid Wachirachai on 28/11/22.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct CurrentWeatherResponse: Decodable {
+struct CurrentWeather: Decodable {
     
-    let id: String
+    let id: Int
     let name: String
     let temperature: Double
     let humidity: Double
@@ -30,13 +30,13 @@ struct CurrentWeatherResponse: Decodable {
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let weather = try container.decode(Weather.self, forKey: .weather)
+        let weather = try container.decode([Weather].self, forKey: .weather)
         let main = try container.decode(Main.self, forKey: .main)
         
-        self.id = try container.decode(String.self, forKey: .id)
+        self.id = try container.decode(Int.self, forKey: .id)
         self.name = try container.decode(String.self, forKey: .name)
         self.temperature = main.temp
         self.humidity = main.humidity
-        self.icon = weather.icon
+        self.iconImageUrl = "https://openweathermap.org/img/wn/\(weather.first!.icon)@2x.png"
     }
 }
